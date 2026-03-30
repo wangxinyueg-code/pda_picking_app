@@ -3,7 +3,7 @@ description: PDA 拣货下架页面与任务备注弹窗还原
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.8.0 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
 
 dependencies:
   flutter:
