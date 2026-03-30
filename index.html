@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDA 任务弹窗</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="pda-container" id="app">
+    <!-- 底层：拣货下架页面（完整版） -->
+    <section class="picking-page" aria-label="拣货下架页面">
+      <!-- 顶部状态栏 -->
+      <header class="status-bar">
+        <span class="warehouse-name">前置仓</span>
+        <div class="status-right">
+          <span class="version-text">V2.0</span>
+          <span class="time">12:30</span>
+          <div class="status-system">
+            <span class="signal-bars" aria-label="信号"></span>
+            <span class="battery-shell" aria-label="电池">
+              <span class="battery-level"></span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- 顶部导航栏 -->
+      <nav class="top-nav">
+        <div class="top-nav-left">
+          <button class="back-button" data-role="back-button" aria-label="返回">
+            <img src="./icon/Lui-icon-swapcircle2.png" alt="返回" class="back-icon" />
+          </button>
+          <span class="progress">
+            <span class="progress-number">0/150</span><span class="progress-unit">件</span>
+          </span>
+        </div>
+
+        <div class="timer" aria-label="倒计时">
+          <span class="timer-box timer-minute">04</span>
+          <span class="timer-sep">:</span>
+          <span class="timer-box timer-second">30</span>
+        </div>
+
+        <button class="settings-button" data-role="settings-button" aria-label="设置">
+          <img src="./icon/Lui-icon-setting.png" alt="设置" class="settings-icon" />
+        </button>
+      </nav>
+
+      <!-- 商品滑动栏 -->
+      <section class="product-scroll-bar">
+        <div class="product-scroll-main">
+          <div class="filter-bar">
+            <span class="sort-text">正序</span>
+            <button class="sort-arrow" data-role="sort-arrow" aria-label="排序">
+              <img src="./icon/Lui-icon-d-caret-solid.png" alt="排序" class="sort-arrow-icon" />
+            </button>
+          </div>
+
+          <div class="scroll-container" id="productScrollContainer">
+            <!-- 商品列表将由 JS 动态生成 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 商品详情卡片模块 -->
+      <section class="goods-detail-card" aria-label="商品详情卡片">
+        <!-- 上半区：订单信息 + 商品图 -->
+        <section class="order-info-card order-theme-1" id="orderInfoCard">
+          <div class="order-details">
+            <span class="order-label" id="orderLabel">第一单</span>
+            <div class="order-location">
+              <span class="location-number" id="orderLocationMain">CW-01-2</span>
+              <span class="location-unit">列</span>
+              <span class="location-number" id="orderFloorNum">4</span>
+              <span class="location-unit">层</span>
+            </div>
+            <div class="order-count-line">
+              <span class="order-count-number" id="orderCountNum">20</span>
+              <span class="order-count-unit">件</span>
+            </div>
+          </div>
+          <div class="product-image-large">
+            <img src="" alt="商品大图" class="product-image product-image--order1" id="orderMainImage" />
+            <button class="add-button" data-role="add-product" aria-label="放大">
+              <img src="./icon/enlarge-min.png" alt="放大" class="add-button-icon" />
+            </button>
+          </div>
+        </section>
+
+        <!-- 下半区：商品信息 -->
+        <section class="product-details" id="productDetailsCard">
+          <div class="product-details-main">
+            <h2 class="product-title" id="detailName">新鲜鸡胸肉 500g/袋 冷冻保鲜 肉质鲜嫩 高蛋白</h2>
+            <div class="product-meta">
+              <span class="tag production-date" id="detailDate">生产日期：2025.05.29</span>
+              <div class="tags-row">
+                <span class="tag slaughter" id="detailTag1">宰杀</span>
+                <span class="tag quality" id="detailTag2">良品</span>
+              </div>
+            </div>
+            <button class="expand-arrow" data-role="expand-details" aria-label="展开收起">
+              <img src="./icon/down-min.png" alt="展开收起" class="expand-arrow-icon" />
+            </button>
+          </div>
+          <section class="extra-info-section" id="extraInfoSection" aria-label="额外信息"></section>
+        </section>
+      </section>
+
+      <!-- 底部操作区 -->
+      <section class="bottom-operation" id="bottomOperation">
+        <div class="operation-step-title" id="operationStepTitle">商品编码 >>> 下架数量</div>
+
+        <div class="operation-input-list" id="operationInputList">
+          <!-- 动态步骤输入区 -->
+        </div>
+
+        <div class="action-buttons">
+          <button class="action-button" data-role="task-notes">任务备注</button>
+          <button class="action-button" data-role="picking-details">拣货明细</button>
+          <button class="action-button" data-role="difference-report">差异上报</button>
+          <button class="confirm-button" data-role="confirm">确认</button>
+        </div>
+      </section>
+    </section>
+
+    <!-- 商品图片放大预览 -->
+    <section class="image-preview" id="imagePreview" aria-label="图片放大预览">
+      <button class="image-preview__overlay" id="imagePreviewOverlay" aria-label="关闭放大预览"></button>
+      <article class="image-preview__dialog">
+        <button class="image-preview__close" id="imagePreviewClose" aria-label="关闭">关闭</button>
+        <img src="" alt="放大商品图" class="image-preview__img" id="imagePreviewImg" />
+      </article>
+    </section>
+
+    <!-- 中层+上层：遮罩与弹窗 -->
+    <section class="modal-system" id="modalSystem" aria-label="任务弹窗系统">
+      <!-- 中层遮罩 -->
+      <button
+        class="modal-overlay"
+        id="modalOverlay"
+        type="button"
+        aria-label="点击遮罩关闭弹窗"
+      ></button>
+
+      <!-- 上层弹窗 -->
+      <article class="task-modal" id="taskModal" role="dialog" aria-modal="true">
+        <header class="task-modal__header" id="taskModalHeader">
+          <h2 class="task-modal__title" id="taskModalTitle">
+            任务数量·<span id="taskCount">0</span>个
+          </h2>
+          <button class="task-modal__close" id="closeBtn" type="button">关闭</button>
+        </header>
+        <section class="task-modal__list" id="taskList"></section>
+      </article>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
