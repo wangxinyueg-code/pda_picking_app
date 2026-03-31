@@ -8,7 +8,7 @@ class PdaHomePage extends StatefulWidget {
 }
 
 class _PdaHomePageState extends State<PdaHomePage> {
-  // 模拟数据（和你网页一致）
+  // 
   String progress = "0/150";
   String countDownMin = "04";
   String countDownSec = "30";
